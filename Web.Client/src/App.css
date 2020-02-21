@@ -1,0 +1,121 @@
+.col-sm-6, .col-md-6, .col-sm-12, .col-md-12 {
+    width: auto;
+}
+
+main {
+    margin-bottom: 20px;
+}
+
+footer{
+    color: rgba(255,255,255, 0.5);
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: auto; 
+}
+
+.footer-navigation > .nav-link:hover {
+    background-color: #264d74;
+}
+
+.App {
+    padding: 0;
+    margin: 0;
+    display:flex; 
+    flex-direction:column; 
+    height:100%;
+}
+
+.logo {
+    max-width: 150px;
+    width: 100%;
+    display: block;   
+}
+
+.navbar,
+footer {
+    background-color:#234465;
+}
+
+a.nav-link {
+    color: #fff;    
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+a.nav-link:not(.primary-btn) {
+    opacity: 0.5;
+}
+
+a.nav-link:hover {
+    opacity: 1;
+}
+
+.primary-btn {
+    background-color: #ffa000;
+    padding: 6px 15px;
+    border-radius: 20px;
+    opacity: 1;
+    text-transform: capitalize !important;
+    transition: all .2s ease;
+}
+
+.primary-btn:hover {
+    background-color: #fff;
+    color: #234465 !important;
+}
+
+.form-heading:first-of-type {
+    border-right: 2px solid #29394B;
+}
+
+h3 {
+    color: #bbb;
+    font-size: 22px;
+}
+
+h3:hover {
+    cursor: pointer;
+    color: #44B1FA;
+}
+
+h3.active-login-form,
+h3.active-register-form {
+    color: #29394B;
+}
+
+h3.section-title {
+    text-transform: uppercase;
+    color: #29394B;
+    font-size: 24px;
+    margin-top: 20px;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+}
+
+h3.section-title::after {
+    background-color: #ffa000;
+    height: 4px;
+    position: absolute;
+    width: calc(100% - 16px);
+    content: '';
+    left: 8px;
+    bottom: -8px;
+}
+
+.btn-primary {
+    background-color: #44A9F8;
+    border: 0;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #6DCCF3;
+}
+
+.social-links > a {
+    font-size: 30px;
+}

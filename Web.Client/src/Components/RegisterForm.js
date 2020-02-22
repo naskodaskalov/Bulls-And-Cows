@@ -2,19 +2,38 @@ import React, { Component } from 'react'
 import InputField from './Common/InputField'
 import Button from './Common/Button'
 
-export default class RegisterForm extends Component {
+import userActions from '../Actions/UserActions'
+import userStore from '../Stores/UserStore'
+import { withRouter } from 'react-router-dom'
+
+class RegisterForm extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      username: '',
-      password: '',
-      email: '',
-      confirmPassword: ''
+      user: {
+        username: '',
+        password: '',
+        email: '',
+        confirmPassword: ''
+      },
+      error: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
+
+    this.handleUserRegistration = this.handleUserRegistration.bind(this)
+
+    userStore.on(
+      userStore.eventTypes.USER_REGISTERED,
+      this.handleUserRegistration)
+  }
+
+  componentWillUnmount () {
+    userStore.removeListener(
+      userStore.eventTypes.USER_REGISTERED,
+      this.handleUserRegistration)
   }
 
   handleInputChange (e) {
@@ -23,14 +42,36 @@ export default class RegisterForm extends Component {
 
   handleFormSubmit (e) {
     e.preventDefault()
-    if (this.formValidate()) {
-      console.log('Registered ', this.state.username)
+    if (!this.formValidate()) {
+      return
+    }
+
+    userActions.register(this.state.user)
+  }
+
+  handleUserRegistration (data) {
+    if (!data.success) {
+      let firstError = data.message
+      if (data.errors) {
+        firstError = Object
+          .keys(data.errors)
+          .map(k => data.errors[k])[0]
+      }
+      if (firstError.length) {
+        this.setState({
+          error: firstError
+        })
+      }
+      // toastr.error(this.state.error)
+    } else {
+      // toastr.success(data.message)
+      this.props.history.push('/login')
     }
   }
 
   formValidate () {
     var isFormValid = true
-    var { username, password, email, confirmPassword } = this.state
+    var { username, password, email, confirmPassword } = this.state.user
 
     if (password !== confirmPassword) {
       isFormValid = false
@@ -50,10 +91,16 @@ export default class RegisterForm extends Component {
   render () {
     return (
       <div>
+        {this.state.error ? (
+          <div className='alert alert-danger' role='alert'>
+            {this.state.error}
+          </div>
+        ) : ''}
         <InputField
           symbol='fas fa-user'
           type='text'
           name='username'
+          value={this.state.user.username}
           placeholder='Потребителско име'
           onInputChange={this.handleInputChange}
         />
@@ -61,6 +108,7 @@ export default class RegisterForm extends Component {
           symbol='fas fa-envelope'
           type='text'
           name='email'
+          value={this.state.user.email}
           placeholder='E-mail'
           onInputChange={this.handleInputChange}
         />
@@ -68,6 +116,7 @@ export default class RegisterForm extends Component {
           symbol='fas fa-lock'
           type='password'
           name='password'
+          value={this.state.user.password}
           placeholder='Парола'
           onInputChange={this.handleInputChange}
         />
@@ -75,6 +124,7 @@ export default class RegisterForm extends Component {
           symbol='fas fa-lock'
           type='password'
           name='confirmPassword'
+          value={this.state.user.confirmPassword}
           placeholder='Потвърди парола'
           onInputChange={this.handleInputChange}
         />
@@ -87,3 +137,5 @@ export default class RegisterForm extends Component {
     )
   }
 }
+
+export default withRouter(RegisterForm)

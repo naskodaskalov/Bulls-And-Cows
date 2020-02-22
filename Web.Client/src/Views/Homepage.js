@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Auths from '../Configs/Auths'
+import Auths from '../Utilities/Auths'
 import PrimaryLink from '../Components/Common/PrimaryLink'
 
 export default class Homepage extends Component {

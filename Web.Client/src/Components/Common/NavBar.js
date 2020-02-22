@@ -1,8 +1,31 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import Link from './Link'
+import Auths from '../../Utilities/Auths'
+import userStore from '../../Stores/UserStore'
 
 export default class NavBar extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      username: Auths.getUser().name
+    }
+
+    this.handleUserLoggedIn = this.handleUserLoggedIn.bind(this)
+
+    userStore.on(
+      userStore.eventTypes.USER_LOGGED_IN,
+      this.handleUserLoggedIn
+    )
+  }
+
+  handleUserLoggedIn (data) {
+    if (data.success) {
+      this.setState({ username: data.user.name })
+    }
+  }
+
   render () {
     return (
       <nav className='navbar navbar-expand-lg navbar-light'>
@@ -19,18 +42,26 @@ export default class NavBar extends Component {
               name='Начало'
             />
             <Link
-              link='/ranging'
+              link='/game/ranging'
               name='Класиране'
             />
             <Link
               link='/rules'
               name='Правила'
             />
-            <Link
-              link='/auth'
-              name='Влез'
-              isButton='primary-btn'
-            />
+            {Auths.isUserAuthenticated() ? (
+              <Link
+                link='/logout'
+                name='Излез'
+                isButton='primary-btn'
+              />
+            ) : (
+              <Link
+                link='/login'
+                name='Влез'
+                isButton='primary-btn'
+              />
+            )}
           </div>
         </div>
       </nav>

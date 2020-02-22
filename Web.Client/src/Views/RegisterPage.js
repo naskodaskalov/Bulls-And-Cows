@@ -7,8 +7,7 @@ export default class AuthPage extends Component {
     super(props)
 
     this.state = {
-      isLoginActive: true,
-      isRegisterActive: false
+      isRegisterActive: this.props.location.pathname === '/register'
     }
 
     this.handleShowLoginForm = this.handleShowLoginForm.bind(this)
@@ -17,10 +16,12 @@ export default class AuthPage extends Component {
 
   handleShowRegisterForm () {
     this.setState({ isRegisterActive: true, isLoginActive: false })
+    this.props.history.push('/register')
   }
 
   handleShowLoginForm () {
     this.setState({ isLoginActive: true, isRegisterActive: false })
+    this.props.history.push('/login')
   }
 
   render () {

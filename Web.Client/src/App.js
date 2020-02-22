@@ -2,7 +2,9 @@ import React from 'react'
 import './App.css'
 import NavBar from './Components/Common/NavBar'
 import Footer from './Components/Common/Footer'
-import Routes from './Configs/Routes'
+import Routes from './Utilities/Routes'
+
+import { withRouter } from 'react-router-dom'
 
 function App () {
   return (
@@ -20,4 +22,4 @@ function App () {
   )
 }
 
-export default App
+export default withRouter(App)

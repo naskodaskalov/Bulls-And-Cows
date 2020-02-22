@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const usersData = require('../data/users')
 const PassportLocalStrategy = require('passport-local').Strategy
+const bcrypt = require('bcrypt')
 
 module.exports = new PassportLocalStrategy({
   usernameField: 'email',
@@ -25,26 +26,31 @@ module.exports = new PassportLocalStrategy({
 
       return done(error)
     }
+    let isMatch = ''
+    bcrypt.compare(user.password, savedUser.password).then(function (result) {
+      isMatch = result
+    }).then(() => {
+      if (!isMatch) {
+        const error = new Error('Incorrect email or password')
+        error.name = 'IncorrectCredentialsError'
 
-    const isMatch = savedUser.password === user.password
+        return done(error)
+      }
 
-    if (!isMatch) {
-      const error = new Error('Incorrect email or password')
-      error.name = 'IncorrectCredentialsError'
+      const payload = {
+        sub: savedUser.id
+      }
 
-      return done(error)
+      // create a token string
+      const token = jwt.sign(payload, 'bu11$ @nd c0w$')
+      const data = {
+        name: savedUser.username,
+        email: savedUser.email
+      }
+
+      return done(null, token, data)
     }
 
-    const payload = {
-      sub: savedUser.id
-    }
-
-    // create a token string
-    const token = jwt.sign(payload, 'bu11$ @nd c0w$')
-    const data = {
-      name: savedUser.name
-    }
-
-    return done(null, token, data)
+    )
   })
 })

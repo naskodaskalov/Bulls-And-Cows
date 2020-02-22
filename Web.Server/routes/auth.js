@@ -1,6 +1,7 @@
 const express = require('express')
 const passport = require('passport')
 const validator = require('validator')
+const usersData = require('../data/users')
 
 const router = new express.Router()
 
@@ -60,6 +61,13 @@ function validateLoginForm (payload) {
     errors
   }
 }
+router.post('/updatePoints', (req, res, next) => {
+  usersData.updatePoints(req.body)
+  return res.status(200).json({
+    success: true,
+    message: ''
+  })
+})
 
 router.post('/signup', (req, res, next) => {
   const validationResult = validateSignupForm(req.body)

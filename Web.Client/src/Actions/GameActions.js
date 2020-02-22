@@ -2,8 +2,7 @@ import dispatcher from '../dispatcher'
 
 const gameActions = {
   types: {
-    GET_RANGING: 'GET_RANGING',
-    LOGIN_USER: 'LOGIN_USER'
+    GET_RANGING: 'GET_RANGING'
   },
   ranging (user) {
     dispatcher.dispatch({

@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import Helpers from '../Utilities/Helpers'
 import gameActions from '../Actions/GameActions'
 import gameStore from '../Stores/GameStore'
+import Auths from '../Utilities/Auths'
 
 export default class RangingPage extends Component {
   constructor (props) {
     super(props)
     this.state = {
       players: [],
-      loggedUser: window.localStorage.getItem('username'),
+      loggedUser: Auths.getUser().email,
       isLoading: true
     }
 
@@ -47,13 +48,13 @@ export default class RangingPage extends Component {
     if (players) {
       sortedPlayers = Helpers.SortArrayDesc(players, 'points')
       topPlayers = Helpers.GetTopUsers(sortedPlayers, 25)
-      loggedUserInTopList = topPlayers.filter(p => p.username === this.state.loggedUser)
+      loggedUserInTopList = topPlayers.filter(p => p.email === this.state.loggedUser)
       loggedUserScore = loggedUserInTopList.length === 0 ? sortedPlayers.filter((p, index) => {
-        var player = p.username === this.state.loggedUser ? p : {}
+        var player = p.email === this.state.loggedUser ? p : {}
         if (player) {
           player.id = index
         }
-        return p.username === this.state.loggedUser
+        return p.email === this.state.loggedUser
       }) : []
     }
 
@@ -70,7 +71,7 @@ export default class RangingPage extends Component {
           ) : (
             <ul className='players-list mt-3'>
               {topPlayers.map((p, index) => {
-                var loggedUser = this.state.loggedUser === p.username ? 'logged-user' : ''
+                var loggedUser = this.state.loggedUser === p.email ? 'logged-user' : ''
                 return (
                   <li className='player-li col-md-6 col-sm-12' key={index}>
                     <div className={`current-player ${loggedUser}`}>

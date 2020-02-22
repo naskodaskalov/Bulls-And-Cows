@@ -9,6 +9,10 @@ class UserData {
   static login (user) {
     return Data.post(`${baseUrl}/login`, user)
   }
+
+  static updatePoints (userData) {
+    return Data.post(`${baseUrl}/updatePoints`, userData)
+  }
 }
 
 export default UserData

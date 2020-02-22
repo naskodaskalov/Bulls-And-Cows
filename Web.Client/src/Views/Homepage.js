@@ -7,7 +7,7 @@ export default class Homepage extends Component {
     super(props)
 
     this.state = {
-      isLoggedIn: Auths.isLoggedIn()
+      isLoggedIn: Auths.getUser()
     }
   }
 
@@ -28,7 +28,7 @@ export default class Homepage extends Component {
             <div className='col-md-6 col-sm-12 text-center'>
               <PrimaryLink
                 name='Виж класацията'
-                link='/ranging'
+                link='/game/ranging'
               />
             </div>
           </div>

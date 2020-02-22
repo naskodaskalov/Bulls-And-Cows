@@ -6,10 +6,9 @@ const localSignupStrategy = require('./passport/local-signup')
 const localLoginStrategy = require('./passport/local-login')
 const authRoutes = require('./routes/auth')
 const gameRoutes = require('./routes/game')
+const port = process.env.PORT || 5000
 
 const app = express()
-
-const port = 5000
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

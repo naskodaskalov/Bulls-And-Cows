@@ -6,6 +6,8 @@ import userActions from '../Actions/UserActions'
 import userStore from '../Stores/UserStore'
 import { withRouter } from 'react-router-dom'
 
+import Helpers from '../Utilities/Helpers'
+
 class RegisterForm extends Component {
   constructor (props) {
     super(props)
@@ -37,7 +39,7 @@ class RegisterForm extends Component {
   }
 
   handleInputChange (e) {
-    this.setState({ [e.target.name]: e.target.value })
+    Helpers.handleFormChange.bind(this)(e, 'user')
   }
 
   handleFormSubmit (e) {
@@ -62,9 +64,7 @@ class RegisterForm extends Component {
           error: firstError
         })
       }
-      // toastr.error(this.state.error)
     } else {
-      // toastr.success(data.message)
       this.props.history.push('/login')
     }
   }

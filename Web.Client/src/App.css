@@ -129,6 +129,7 @@ h3.section-title::after {
     display: flex;
     flex-direction: column;
     list-style-type: none;
+    padding: 0;
 }
 
 .player-li {

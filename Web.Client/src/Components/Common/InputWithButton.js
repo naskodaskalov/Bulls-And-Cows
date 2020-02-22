@@ -9,6 +9,8 @@ const InputWithButton = (props) => (
       name={props.name}
       value={props.value}
       onChange={props.onChange}
+      onKeyUp={props.onKeyUp}
+      maxLength='4'
     />
     <div className='input-group-append'>
       <button className='btn primary-btn' type='button' onClick={props.onSave}>{props.btnValue}</button>

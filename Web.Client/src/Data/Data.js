@@ -1,6 +1,6 @@
 import Auths from '../Utilities/Auths'
 
-const baseUrl = 'http://localhost:5000'
+const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'https://bullsandcows-server.herokuapp.com'
 
 const getOptions = () => ({
   mode: 'cors',

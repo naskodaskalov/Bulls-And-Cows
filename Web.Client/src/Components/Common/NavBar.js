@@ -41,6 +41,14 @@ export default class NavBar extends Component {
               link='/'
               name='Начало'
             />
+            {Auths.isUserAuthenticated() ? (
+              <Link
+                link='/game'
+                name='Нова игра'
+              />
+            ) : (
+              ''
+            )}
             <Link
               link='/game/ranging'
               name='Класиране'

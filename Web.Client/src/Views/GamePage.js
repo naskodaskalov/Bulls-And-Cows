@@ -1,8 +1,10 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import InputWithButton from '../Components/Common/InputWithButton'
 import Button from '../Components/Common/Button'
 import Helpers from '../Utilities/Helpers'
-import { throwStatement } from '@babel/types'
+
+import userStore from '../Stores/UserStore'
+import userActions from '../Actions/UserActions'
 
 export default class GamePage extends Component {
   constructor (props) {
@@ -12,13 +14,31 @@ export default class GamePage extends Component {
       guestNumber: '',
       startNewGame: false,
       numberToGuess: 0,
-      attempts: 1,
-      history: []
+      attempts: 0,
+      points: 10,
+      history: [],
+      isGameFinished: false,
+      wonNumber: 0,
+      error: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleGameStart = this.handleGameStart.bind(this)
     this.handleNumberCheck = this.handleNumberCheck.bind(this)
+    this.handleKeyEvent = this.handleKeyEvent.bind(this)
+    this.handleStartNewGame = this.handleStartNewGame.bind(this)
+    this.handlePointsSubmit = this.handlePointsSubmit.bind(this)
+    this.handleUserUpdate = this.handleUserUpdate.bind(this)
+
+    userStore.on(
+      userStore.eventTypes.USER_UPDATE_POINTS, this.handleUserUpdate
+    )
+  }
+
+  componentWillUnmount () {
+    userStore.removeListener(
+      userStore.eventTypes.USER_UPDATE_POINTS, this.handleUserUpdate
+    )
   }
 
   handleInputChange (e) {
@@ -36,56 +56,96 @@ export default class GamePage extends Component {
     }
   }
 
+  handleStartNewGame () {
+    this.setState({
+      guestNumber: '',
+      startNewGame: false,
+      numberToGuess: 0,
+      attempts: 0,
+      points: 10,
+      history: [],
+      isGameFinished: false,
+      wonNumber: 0
+    })
+
+    this.handleGameStart()
+  }
+
   handleNumberCheck (e) {
     e.preventDefault()
     const numberToGuess = this.state.numberToGuess
     const guestNumber = this.state.guestNumber
+
+    if (guestNumber.length < 4) {
+      return
+    }
+
     var history = this.state.history
     var attempts = this.state.attempts
-
-    var bulls = this.checkForBulls(numberToGuess, guestNumber)
-    var cows = this.checkForCows(numberToGuess, guestNumber)
+    var result = this.checkNumber(numberToGuess, guestNumber)
+    var isGameFinished = result[0] === 4
+    var points = isGameFinished ? this.state.points : this.state.points - 1
 
     history.push({
-      bulls: bulls,
-      cows: cows,
+      bulls: result[0],
+      cows: result[1],
       guestNumber: guestNumber,
       id: attempts
     })
 
+    if (isGameFinished) {
+      const userData = window.localStorage.getItem('user')
+
+      const data = JSON.parse(userData)
+      data.points = points
+      this.handlePointsSubmit(data)
+    }
+
     this.setState({
       guestNumber: '',
       attempts: attempts + 1,
-      history: Helpers.SortArrayDesc(history, 'id')
+      history: Helpers.SortArrayDesc(history, 'id'),
+      wonNumber: result[0] === 4 ? guestNumber : 0,
+      isGameFinished,
+      points
     })
   }
 
-  checkForBulls (computerNumber, personNumber) {
-    let counter = 0
-    const compArr = computerNumber.toString().split('')
-    const personArr = personNumber.toString().split('')
-    for (let i = 0; i < compArr.length; i++) {
-      if (compArr[i] === personArr[i]) {
-        counter++
-      }
-    }
-
-    return counter
+  handlePointsSubmit (userData) {
+    userActions.updatePoints(userData)
   }
 
-  checkForCows (computerNumber, personNumber) {
-    let counter = 0
+  handleUserUpdate (data) {
+    if (!data.success) {
+      this.setState({ error: 'Connection problem! Try later!' })
+    }
+  }
+
+  handleKeyEvent (e) {
+    if (e.keyCode === 13) {
+      this.handleNumberCheck(e)
+    }
+  }
+
+  checkNumber (computerNumber, personNumber) {
+    let cows = 0
+    let bulls = 0
     const compArr = computerNumber.toString().split('')
     const personArr = personNumber.toString().split('')
     for (let i = 0; i < compArr.length; i++) {
       for (let k = 0; k < personArr.length; k++) {
+        if (compArr[i] === personArr[i]) {
+          bulls++
+          break
+        }
         if (compArr[i] === personArr[k]) {
-          counter++
+          cows++
         }
       }
     }
 
-    return counter
+    const result = [bulls, cows]
+    return result
   }
 
   checkIfValid (randomnumber) {
@@ -106,6 +166,12 @@ export default class GamePage extends Component {
       <div className='container'>
         <div className='text-center'>
           <h3 className='section-title'>Игра</h3>
+
+          {this.state.error ? (
+            <div className='alert alert-danger' role='alert'>
+              {this.state.error}
+            </div>
+          ) : ''}
           <section className='game-container'>
             {this.state.startNewGame ? (
               <div>
@@ -116,11 +182,25 @@ export default class GamePage extends Component {
                   name='guestNumber'
                   btnValue='Провери'
                   onSave={this.handleNumberCheck}
+                  onKeyUp={this.handleKeyEvent}
                 />
                 <div className='history-block'>
-                  {this.state.history.map((a, index) => (
-                    <p key={index}>Вашето число е {a.guestNumber}. Имате {a.bulls} бика и {a.cows} крави.</p>
-                  ))}
+                  {this.state.isGameFinished ? (
+                    <div>
+                      <p>Поздравление! Познахте числото {this.state.wonNumber} от {this.state.attempts} опита и спечелихте {this.state.points} точки.</p>
+                      {this.state.history.map((a, index) => (
+                        <p key={index}>Вашето число е {a.guestNumber}. Имате {a.bulls} бика и {a.cows} крави.</p>
+                      )
+                      )}
+                      <Button value='Започни нова игра' onSubmit={this.handleStartNewGame} />
+                    </div>
+                  ) : (
+                    <div>
+                      {this.state.history.map((a, index) => (
+                        <p key={index}>Вашето число е {a.guestNumber}. Имате {a.bulls} бика и {a.cows} крави.</p>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ) : <Button value='Започни нова игра' onSubmit={this.handleGameStart} />}

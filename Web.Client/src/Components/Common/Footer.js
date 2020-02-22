@@ -33,6 +33,14 @@ export default class Footer extends Component {
             link='/'
             name='Начало'
           />
+          {Auths.isUserAuthenticated() ? (
+            <Link
+              link='/game'
+              name='Нова игра'
+            />
+          ) : (
+            ''
+          )}
           <Link
             link='/game/ranging'
             name='Класиране'

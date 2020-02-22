@@ -15,8 +15,8 @@ class LoginForm extends Component {
 
     this.state = {
       user: {
-        email: '123qw23@abv.bg',
-        password: '1234'
+        email: '',
+        password: ''
       },
       error: ''
     }
@@ -46,7 +46,6 @@ class LoginForm extends Component {
   }
 
   handleUserLogin (data) {
-    console.log(data)
     if (!data.success) {
       this.setState({ error: data.message })
     } else {

@@ -16,6 +16,12 @@ class UserStore extends EventEmitter {
       .then(data => this.emit(this.eventTypes.USER_LOGGED_IN, data))
   }
 
+  updatePoints (userData) {
+    UserData
+      .updatePoints(userData)
+      .then(data => this.emit(this.eventTypes.USER_UPDATE_POINTS, data))
+  }
+
   handleAction (action) {
     switch (action.type) {
       case userActions.types.REGISTER_USER: {
@@ -24,6 +30,10 @@ class UserStore extends EventEmitter {
       }
       case userActions.types.LOGIN_USER: {
         this.login(action.user)
+        break
+      }
+      case userActions.types.UPDATE_USER_POINTS: {
+        this.updatePoints(action.userData)
         break
       }
       default: break
@@ -35,7 +45,8 @@ const userStore = new UserStore()
 
 userStore.eventTypes = {
   USER_REGISTERED: 'user_registered',
-  USER_LOGGED_IN: 'user_logged_in'
+  USER_LOGGED_IN: 'user_logged_in',
+  USER_UPDATE_POINTS: 'user_update_points'
 }
 dispatcher.register(userStore.handleAction.bind(userStore))
 

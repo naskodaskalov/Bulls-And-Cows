@@ -1,8 +1,4 @@
 class Auths {
-  static isLoggedIn () {
-    return window.localStorage.getItem('username')
-  }
-
   static saveUser (user) {
     window.localStorage.setItem('user', JSON.stringify(user))
   }

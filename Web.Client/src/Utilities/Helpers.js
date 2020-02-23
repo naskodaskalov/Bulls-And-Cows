@@ -1,4 +1,26 @@
 export default class Helpers {
+  static GetRandomFourDigitsNumber () {
+    var randomnumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
+    while (!this.checkIfValid(randomnumber)) {
+      randomnumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
+    }
+
+    return randomnumber
+  }
+
+  static ValidateNumber (num) {
+    var isNumValid = true
+    var arr = num.toString().split('')
+    for (let i = 0; i < arr.length; i++) {
+      const element = arr[i]
+      if (arr.lastIndexOf(element) > -1 && arr.lastIndexOf(element) !== i) {
+        isNumValid = false
+      }
+    }
+
+    return isNumValid
+  }
+
   static handleFormChange (event, stateField) {
     const target = event.target
     const field = target.name

@@ -6,6 +6,8 @@ import Helpers from '../Utilities/Helpers'
 import userStore from '../Stores/UserStore'
 import userActions from '../Actions/UserActions'
 
+import './GamePage.css'
+
 export default class GamePage extends Component {
   constructor (props) {
     super(props)
@@ -46,13 +48,10 @@ export default class GamePage extends Component {
   }
 
   handleGameStart () {
-    var randomnumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
-    while (!this.checkIfValid(randomnumber)) {
-      randomnumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
-    }
+    const randomNumber = Helpers.GetRandomFourDigitsNumber.bind(this)()
 
-    if (this.checkIfValid(randomnumber)) {
-      this.setState({ startNewGame: true, numberToGuess: randomnumber })
+    if (this.checkIfValid(randomNumber)) {
+      this.setState({ startNewGame: true, numberToGuess: randomNumber })
     }
   }
 
@@ -85,6 +84,10 @@ export default class GamePage extends Component {
     var result = this.checkNumber(numberToGuess, guestNumber)
     var isGameFinished = result[0] === 4
     var points = isGameFinished ? this.state.points : this.state.points - 1
+
+    if (points < 1) {
+      points = 1
+    }
 
     history.push({
       bulls: result[0],
@@ -148,24 +151,15 @@ export default class GamePage extends Component {
     return result
   }
 
-  checkIfValid (randomnumber) {
-    var isNumValid = true
-    var arr = randomnumber.toString().split('')
-    for (let i = 0; i < arr.length; i++) {
-      const element = arr[i]
-      if (arr.lastIndexOf(element) > -1 && arr.lastIndexOf(element) !== i) {
-        isNumValid = false
-      }
-    }
-
-    return isNumValid
+  checkIfValid (randomNumber) {
+    return Helpers.ValidateNumber.bind(this)(randomNumber)
   }
 
   render () {
     return (
       <div className='container'>
         <div className='text-center'>
-          <h3 className='section-title'>Игра</h3>
+          <h3 className='section-title'>Крави и Бикове - The game</h3>
 
           {this.state.error ? (
             <div className='alert alert-danger' role='alert'>

@@ -3,6 +3,7 @@ import InputField from './Common/InputField'
 import Button from './Common/Button'
 
 import Helpers from '../Utilities/Helpers'
+import toastr from 'toastr'
 
 import Auths from '../Utilities/Auths'
 import userActions from '../Actions/UserActions'
@@ -52,6 +53,7 @@ class LoginForm extends Component {
       Auths.authenticateUser(data.token)
       Auths.saveUser(data.user)
 
+      toastr.success(data.message)
       this.props.history.push('/')
     }
   }

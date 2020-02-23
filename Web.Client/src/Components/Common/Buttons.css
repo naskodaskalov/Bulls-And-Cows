@@ -1,0 +1,29 @@
+
+.primary-btn {
+    background-color: #ffa000;
+    padding: 6px 15px;
+    border-radius: 20px;
+    opacity: 1;
+    text-transform: capitalize !important;
+    transition: all .2s ease;
+}
+
+.primary-btn:hover {
+    background-color: #fff;
+    color: #234465 !important;
+}
+
+.input-group-append > .primary-btn:hover {
+    background-color: #ffa000;
+    color: #fff !important;
+}
+
+.btn-primary {
+    background-color: #44A9F8;
+    border: 0;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #6DCCF3;
+}

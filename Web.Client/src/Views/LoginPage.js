@@ -31,13 +31,13 @@ export default class AuthPage extends Component {
     return (
       <div>
         <div className='row no-margin-offset pt-5 text-center justify-content-center'>
-          <div className='col-md-6 col-xs-6 text-right form-heading'>
+          <div className='col-6  text-right form-heading'>
             <h3 onClick={this.handleShowLoginForm} className={loginFormActive}>Вход за потребители</h3>
           </div>
-          <div className='col-md-6 col-xs-6 text-left form-heading'>
+          <div className='col-6 text-left form-heading'>
             <h3 onClick={this.handleShowRegisterForm} className={registerFormActive}>Регистрация</h3>
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-6 col-sm-12'>
             {this.state.isLoginActive ? <LoginForm /> : <RegisterForm />}
           </div>
         </div>

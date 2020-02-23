@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './Buttons.css'
+
 const InputWithButton = (props) => (
   <div className='input-group mb-3'>
     <input

@@ -20,6 +20,16 @@ export default class NavBar extends Component {
     )
   }
 
+  componentDidMount () {
+    document.querySelectorAll('.navbar-collapse > .nav-link').forEach(el => {
+      el.addEventListener('click', function () {
+        if (document.querySelector('.navbar-collapse.collapse.show') != null) {
+          document.querySelector('.navbar-collapse.collapse.show').classList.remove('show')
+        }
+      })
+    })
+  }
+
   handleUserLoggedIn (data) {
     if (data.success) {
       this.setState({ username: data.user.name })

@@ -1,8 +1,10 @@
 import React from 'react'
-import './App.css'
 import NavBar from './Components/Common/NavBar'
 import Footer from './Components/Common/Footer'
 import Routes from './Utilities/Routes'
+
+import './App.css'
+import './MediaQueries.css'
 
 import { withRouter } from 'react-router-dom'
 
@@ -15,7 +17,7 @@ function App () {
       <main className='container'>
         <Routes />
       </main>
-      <footer className='p-3'>
+      <footer>
         <Footer />
       </footer>
     </div>

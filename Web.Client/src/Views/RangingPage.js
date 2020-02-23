@@ -4,6 +4,8 @@ import gameActions from '../Actions/GameActions'
 import gameStore from '../Stores/GameStore'
 import Auths from '../Utilities/Auths'
 
+import './RangingPage.css'
+
 export default class RangingPage extends Component {
   constructor (props) {
     super(props)

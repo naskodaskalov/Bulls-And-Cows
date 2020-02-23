@@ -3,6 +3,8 @@ import Link from './Link'
 import Auths from '../../Utilities/Auths'
 import userStore from '../../Stores/UserStore'
 
+import './Footer.css'
+
 export default class Footer extends Component {
   constructor (props) {
     super(props)
@@ -28,7 +30,7 @@ export default class Footer extends Component {
   render () {
     return (
       <div className='col-md-12 d-flex flex-row'>
-        <div className='footer-navigation col-md-3'>
+        <div className='footer-navigation col-md-3 col-sm-6'>
           <Link
             link='/'
             name='Начало'
@@ -61,7 +63,7 @@ export default class Footer extends Component {
             />
           )}
         </div>
-        <div className='col-md-6 p-2'>
+        <div className='col-md-6 col-sm-6'>
           <p>&copy; 2020 - Designed and Developed by:</p>
           <p><a href='http://developine.eu' className='nav-link' target='_blank' rel='noopener noreferrer'>Nasko Daskalov | developine.eu</a></p>
           <div className='social-links'>

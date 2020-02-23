@@ -1,4 +1,21 @@
 export default class Helpers {
+  static GetServerError (data) {
+    let firstError = data.message
+    if (data.errors) {
+      firstError = Object
+        .keys(data.errors)
+        .map(k => data.errors[k])[0]
+    }
+
+    if (firstError.length) {
+      this.setState({
+        errors: {
+          globalError: firstError
+        }
+      })
+    }
+  }
+
   static GetRandomFourDigitsNumber () {
     var randomnumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000
     while (!this.checkIfValid(randomnumber)) {

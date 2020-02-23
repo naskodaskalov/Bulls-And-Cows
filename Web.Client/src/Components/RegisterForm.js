@@ -60,17 +60,7 @@ class RegisterForm extends Component {
 
   handleUserRegistration (data) {
     if (!data.success) {
-      let firstError = data.message
-      if (data.errors) {
-        firstError = Object
-          .keys(data.errors)
-          .map(k => data.errors[k])[0]
-      }
-      if (firstError.length) {
-        this.setState({
-          globalError: firstError
-        })
-      }
+      Helpers.GetServerError.bind(this)(data)
     } else {
       toastr.success(data.message)
       this.props.history.push('/login')

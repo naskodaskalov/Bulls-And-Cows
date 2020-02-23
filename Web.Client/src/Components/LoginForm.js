@@ -19,7 +19,9 @@ class LoginForm extends Component {
         email: '',
         password: ''
       },
-      error: ''
+      errors: {
+        globalError: ''
+      }
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -48,7 +50,7 @@ class LoginForm extends Component {
 
   handleUserLogin (data) {
     if (!data.success) {
-      this.setState({ error: data.message })
+      Helpers.GetServerError.bind(this)(data)
     } else {
       Auths.authenticateUser(data.token)
       Auths.saveUser(data.user)
@@ -61,9 +63,9 @@ class LoginForm extends Component {
   render () {
     return (
       <div>
-        {this.state.error ? (
+        {this.state.errors.globalError ? (
           <div className='alert alert-danger' role='alert'>
-            {this.state.error}
+            {this.state.errors.globalError}
           </div>
         ) : ''}
         <InputField
